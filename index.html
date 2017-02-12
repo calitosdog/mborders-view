@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<style>
+	.SvgOverlay {
+            position: relative;
+            width: 500px;
+            height: 500px;           
+        }
+        
+        .SvgOverlay svg {
+            position: absolute;
+            top: -4000px;
+            left: -4000px;
+            width: 8000px;
+            height: 8000px;        
+        }
+        
+        .SvgOverlay path {
+            stroke: white;
+            stroke-width: 1px;
+            fill-opacity: .5;
+        }	
+	/* Outer */
+	.popup {
+		width:100%;
+		height:100%;
+		display:none;
+		position:fixed;
+		top:0px;
+		left:0px;
+		background:rgba(0,0,0,0.75);
+	}
+	 
+	/* Inner */
+	.popup-inner {
+		<!--max-width:700px;-->
+		width:90%;
+		padding:40px;
+		position:absolute;
+		top:50%;
+		left:50%;
+		-webkit-transform:translate(-50%, -50%);
+		transform:translate(-50%, -50%);
+		box-shadow:0px 2px 6px rgba(0,0,0,1);
+		border-radius:3px;
+		background:#fff;
+		width: 95%;
+		height: 80%;
+	}
+	 
+	/* Close Button */
+	.popup-close {
+		width:30px;
+		height:30px;
+		padding-top:4px;
+		display:inline-block;
+		position:absolute;
+		top:0px;
+		right:0px;
+		transition:ease 0.25s all;
+		-webkit-transform:translate(50%, -50%);
+		transform:translate(50%, -50%);
+		border-radius:1000px;
+		background:rgba(0,0,0,0.8);
+		font-family:Arial, Sans-Serif;
+		font-size:20px;
+		text-align:center;
+		line-height:100%;
+		color:#fff;
+	}
+	 
+	.popup-close:hover {
+		-webkit-transform:translate(50%, -50%) rotate(180deg);
+		transform:translate(50%, -50%) rotate(180deg);
+		background:rgba(0,0,0,1);
+		text-decoration:none;
+	}
+	div#one {
+		width: 50%;
+		height: 500px;
+		background: grey;
+		float: left;
+	}
+	div#two {
+		margin-left: 50%;
+		height: 500px;
+		background: grey;
+	}
+	</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Visual Framework for Human Mobility">
+    <meta name="author" content="Demy">
+    <meta name="keyword" content="Dashboard, Admin, Bootstrap, Responsive, D3, Topojson,">
+    <!--<link rel="shortcut icon" href="img/favicon.png">-->
+
+    <title>UMB - Mobility Borders</title>
+
+    <!-- Bootstrap CSS -->    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />   
+    <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
+    <!-- Custom styles -->
+	<link href="css/widgets.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />	
+	<link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+	<link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+  <!-- container section start -->
+  <section id="container" class="">
+     
+      
+      <header class="header dark-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+            </div>
+
+            <!--logo start-->
+            <a href="index.html" class="logo">Mobility <span class="lite">Borders</span></a>
+            <!--logo end-->  
+            <div class="top-nav notification-row">                
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    </li>                    
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+      </header>      
+      <!--header end-->
+
+      <!--sidebar start-->
+      <!--sidebar end-->  
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">            
+              <!--overview start-->
+			  <div class="row">
+				<div class="col-lg-12">
+					<h3 class="page-header"><i class="fa fa-laptop"></i> <b>UMB</b> - Urban Mobility Borders Dashboard</h3>
+					<ol class="breadcrumb">
+						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+						<li><i class="fa fa-laptop"></i>Dashboard</li>						  	
+					</ol>
+				</div>
+			</div>
+           <div class="row">
+		    
+		    <div class="col-lg-9 col-md-12">					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-map-marker red"></i><strong>OD Map</strong></h2>
+							<div id="weeklevel" class="panel-actions" style="display:none">
+								<a href="#" class="btn-setting" onclick="week(['_lv1_'])" ><strong>Level 1</strong></a>
+								<a href="#" class="btn-minimize"onclick="week(['_lv2_'])" ><strong>Level 2</strong></a>
+							</div>	
+						</div>
+						<div class="panel-body-map" style="height:580px">
+							<div id="map" style="width: 100%; height: 600px;"></div>
+							<div id="rightBlockp" class="provinciaInfo" style=" position:absolute; right:2%; top:6%;">
+								<div id="areap" class = "white-box" ></div>
+							</div>
+						</div>					
+					</div>
+			</div>
+			
+              <div class="col-md-3">
+			  <h4 class="page-header"><i class="fa fa-cog"></i> <b>Control Panel</h4>
+				<section class="panel">
+                          <header class="panel-heading">
+                              Week Selection
+                          </header>
+                          <div class="panel-body">
+                              <div class="btn-group btn-group-justified">
+                                  <a class="btn btn-primary" aria-pressed="false" href="#" onclick="week(0);">1</a>
+                                  <a class="btn btn-primary" href="#" onclick="week(1);">2</a>
+                                  <a class="btn btn-primary" href="#" onclick="week(2);">3</a>
+                                  <a class="btn btn-primary" href="#" onclick="week(3);">4</a>
+                              </div>
+                          </div>                                              
+                      </section>
+              </div>
+			  <div id="weekpanel" class="col-md-3" style="display: none;">
+				<section class="panel">
+                          <header class="panel-heading">
+                              Week Query
+                          </header>
+                          <div class="panel-body">
+                              <button type="button" class="btn btn-primary btn-lg btn-block" onclick="week('weekdays')">Weekdays</button>
+                              <button type="button" class="btn btn-warning btn-lg btn-block" onclick="week('weekend')">Weekends</button>
+                              <button type="button" class="btn btn-danger  btn-lg btn-block" onclick="week('wholeweek')">WholeWeek</button>
+                          </div>
+                </section>
+              </div>
+			  <div id="weekcompare" class="col-md-3" style="display: none;">
+				<section class="panel">
+                          <header class="panel-heading">
+                              Week Compare
+                          </header>
+                          <div class="panel-body">
+                              <button type="button" class="btn btn-primary btn-lg btn-block" data-popup-open="popup-1" href="#">Compare</button>
+                          </div>
+                </section>
+              </div>
+           </div>  
+            
+		  
+		  <!-- Today status end -->
+			<div class="popup" data-popup="popup-1">
+				<div class="popup-inner">
+					<a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+				<div class="col-lg-6 col-md-6">					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-map-marker red"></i><strong>Map 1</strong></h2>
+							<div id="weeklevel" class="panel-actions">
+								<a href="#" class="btn-setting" onclick="map1(['_lv1_'])" ><strong>Level 1</strong></a>
+								<a href="#" class="btn-minimize"onclick="map1(['_lv2_'])" ><strong>Level 2</strong></a>
+								<!--<a href="index.html#" class="btn-close"><i class="fa fa-times"></i></a>-->
+							</div>
+							<div id="mapActions1" class="panel-actions" style="margin-right:1px">
+								<a class="btn-setting dropdown-toggle" type="button" data-toggle="dropdown">Week Selection
+								  <span class="caret"></span></a>
+								  <ul id="weekMap1" class="dropdown-menu">
+									<li><a href="#" onclick="map1(0);">1st Week</a></li>
+									<li><a href="#" onclick="map1(1);">2nd Week</a></li>
+									<li><a href="#" onclick="map1(2);">3rd Week</a></li>
+									<li><a href="#" onclick="map1(3);">4th Week</a></li>
+								  </ul>
+							</div>
+							<div id="mapActions2" class="panel-actions" style="margin-right:1px">
+								<a class="btn-setting dropdown-toggle" type="button" data-toggle="dropdown">Week Type
+								  <span class="caret"></span></a>
+								  <ul id="weektypeMap1" class="dropdown-menu">
+									<li><a href="#" onclick="map1('weekdays');">Weekdays</a></li>
+									<li><a href="#" onclick="map1('weekend');">Weekend</a></li>
+									<li><a href="#" onclick="map1('wholeweek');">Wholeweek</a></li>
+								  </ul>
+							</div>
+						</div>
+						<div class="panel-body-map" style="height:100%">
+							<!--<div id="map" style="height:100%; display:none;"></div>-->
+							<div id="map2" style="width: 100%; height: 400px;"></div>
+							<div id="rightBlockp1" class="compareMap1" style=" position:absolute; right:2%; top:6%;">
+								<div id="areap1" class = "white-box" ></div>
+							</div>
+						</div>					
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-map-marker red"></i><strong>Map 2</strong></h2>
+							<div id="weeklevel" class="panel-actions">
+								<a href="#" class="btn-setting" onclick="map2(['_lv1_'])" ><strong>Level 1</strong></a>
+								<a href="#" class="btn-minimize"onclick="map2(['_lv2_'])" ><strong>Level 2</strong></a>
+								<!--<a href="index.html#" class="btn-close"><i class="fa fa-times"></i></a>-->
+							</div>
+							<div id="mapActions3" class="panel-actions" style="margin-right:1px">
+								<a class="btn-setting dropdown-toggle" type="button" data-toggle="dropdown">Week Selection
+								  <span class="caret"></span></a>
+								  <ul id="weekMap2" class="dropdown-menu">
+									<li><a href="#" onclick="map2(0);">1st Week</a></li>
+									<li><a href="#" onclick="map2(1);">2nd Week</a></li>
+									<li><a href="#" onclick="map2(2);">3rd Week</a></li>
+									<li><a href="#" onclick="map2(3);">4th Week</a></li>
+								  </ul>
+							</div>
+							<div id="mapActions4" class="panel-actions" style="margin-right:1px">
+								<a class="btn-setting dropdown-toggle" type="button" data-toggle="dropdown">Week Type
+								  <span class="caret"></span></a>
+								  <ul id="weektypeMap2" class="dropdown-menu">
+									<li><a href="#" onclick="map2('weekdays');">Weekdays</a></li>
+									<li><a href="#" onclick="map2('weekend');">Weekend</a></li>
+									<li><a href="#" onclick="map2('wholeweek');">Wholeweek</a></li>
+								  </ul>
+							</div>
+								
+						</div>
+						<div class="panel-body-map" style="height:100%">
+							<div id="map3" style="width: 100%; height:400px;"></div>
+							<div id="rightBlockp2" class="compareMap2" style=" position:absolute; right:2%; top:6%;">
+								<div id="areap2" class = "white-box" ></div>
+							</div>
+						</div>					
+					</div>
+				</div>
+				</div>
+			</div> 
+              
+				
+			<div class="row">
+               	
+				<div class="col-lg-9 col-md-12">	
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-flag-o red"></i><strong>UMB Stats</strong></h2>
+							<div class="panel-actions">
+								<a href="index.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+								<a href="index.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="index.html#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="row city-indicators">
+								<div class="col-md-4 col-sm-6 col-xs-12">
+									<div class="info-box bg-aqua num-vehicles">
+										<span class="info-box-icon"><i class="fa fa-car"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">N° of Vehicles</span>
+											<span class="info-box-number">150,000</span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 100%"></div>
+											</div>
+											<span class="progress-description">
+												Source: OCTO Telematics S.p.A.
+											</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
+								</div><!-- /.col -->
+								<div class="col-md-4 col-sm-6 col-xs-12">
+									<div class="info-box bg-aqua num-residents">
+										<span class="info-box-icon"><i class="fa fa-home"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">Residents</span>
+											<span class="info-box-number">3,753 millions</span>
+											<span class="info-box-number"></span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 100%"></div>
+											</div>
+											<span class="progress-description">
+												Source: census 2001
+											</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
+								</div><!-- /.col -->
+								<div class="col-md-4 col-sm-6 col-xs-12">
+									<div class="info-box bg-aqua">
+										<span class="info-box-icon"><i class="fa fa-calendar"></i></span>
+										<div class="info-box-content">
+											<span class="info-box-text">Days</span>
+											<span class="info-box-number">31</span>
+											<div class="progress">
+												<div class="progress-bar" style="width: 70%"></div>
+											</div>
+											<span class="progress-description">
+												May 1-31, 2011 
+											</span>
+										</div><!-- /.info-box-content -->
+									</div><!-- /.info-box -->
+								</div><!-- /.col -->
+							</div>
+						</div>
+	
+					</div>	
+
+				</div>
+             </div>   
+                <!-- statics end -->
+        <br><br>
+          </section>
+      </section>
+      <!--main content end-->
+  </section>
+  <!-- container section start -->
+
+    <!-- javascripts -->
+	
+    <script src="js/jquery.js"></script>
+	<script src="js/jquery-ui-1.10.4.min.js"></script>
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
+    <!-- bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="js/jquery.scrollTo.min.js"></script>
+    <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- charts scripts -->
+    <script src="js/jquery.sparkline.js" type="text/javascript"></script>
+    <script src="js/owl.carousel.js" ></script>
+    <!--script for this page only-->
+
+	<script src="js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="js/jquery.customSelect.min.js" ></script>
+
+	<!-- d3.js -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+	<script type="text/javascript" src="https://d3js.org/topojson.v1.min.js"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDM41-OFER6uvWFRItk6gqOreN_KNEzYiE"></script>
+	<script type="text/javascript" src="d3/map_1.js"></script>
+	<script type="text/javascript" src="d3/map_2.js"></script>
+	<script type="text/javascript" src="d3/map.js"></script>
+  </body>
+</html>
