@@ -118,11 +118,11 @@ var compareName = undefined;
 							.on("click", level2)
 							.on('mouseover', function(d, i) {
 								var currentState = this;
-								d3.select(this).transition(200).style('fill-opacity', 2);
+								d3.select(this).transition(200).style('fill-opacity', .7);
 							})
 							.on('mouseout', function(d, i) {
 								d3.selectAll('path').transition(200)
-								.style('fill-opacity', .7);
+								.style('fill-opacity', 2);
 							});
 						
 						//Loads level 2 exploration for the selected element						
@@ -147,11 +147,11 @@ var compareName = undefined;
 									.on("click", level3)
 									.on('mouseover', function(d, i) {
 										var currentState = this;
-										d3.select(this).transition(200).style('fill-opacity', 2);
+										d3.select(this).transition(200).style('fill-opacity', .7);
 									})
 									.on('mouseout', function(d, i) {
 										d3.selectAll('path').transition(200)
-										.style('fill-opacity', .7);
+										.style('fill-opacity', 2);
 									});
 							});
 						}
@@ -177,11 +177,11 @@ var compareName = undefined;
 									.style('fill', function(d1) { return color(d1.id); })
 									.on('mouseover', function(d1, i) {
 										var currentState1 = this;
-										d3.select(this).transition(200).style('fill-opacity', 2);
+										d3.select(this).transition(200).style('fill-opacity', .7);
 									})
 									.on('mouseout', function(d1, i) {
 										d3.selectAll('path').transition(200)
-										.style('fill-opacity', .7);
+										.style('fill-opacity', 2);
 									});
 							});
 						}
