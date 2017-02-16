@@ -63,7 +63,7 @@ var compareName = undefined;
 			zoom: 8,
 			mapTypeId: google.maps.MapTypeId.TrafficLayer,
 			center: new google.maps.LatLng(43.469740, 10.946157),//Tuscany
-			styles:[{"stylers": [{"lightness": 10}]}]
+			styles:[{"stylers": [{"saturation": -100},{"lightness": 10}]}]   
 	});
 	var lastOverlay;
 	//This loads all converted json files for map rendering
@@ -144,11 +144,42 @@ var compareName = undefined;
 									.enter().append("path")
 									.attr("d", path)
 									.style('fill', function(d) { return color(d.id); })
+									.on("click", level3)
 									.on('mouseover', function(d, i) {
 										var currentState = this;
 										d3.select(this).transition(200).style('fill-opacity', 2);
 									})
 									.on('mouseout', function(d, i) {
+										d3.selectAll('path').transition(200)
+										.style('fill-opacity', .7);
+									});
+							});
+						}
+						function level3(d1, i) {
+							
+							console.log(d1.id);
+							var selectedlv3 = this;
+							var x1 = d3.select(selectedlv3);
+							
+							d3.json('d3/data/'+type+'lv3_.topojson', function(error, tuscany1) {
+								var clusters1 = topojson.feature(tuscany1, tuscany1.objects[type]);
+									cluster1 = clusters1.features.filter(function(b) { 
+									var f = b.id.split(':').slice(0, 2).join(':');
+									return f === d1.id; });
+								
+								x1.transition().duration(500).style("opacity", 0).remove();
+								g.append("g")
+									.attr("id", "cluster")
+									.selectAll("path")
+									.data(cluster1)
+									.enter().append("path")
+									.attr("d", path)
+									.style('fill', function(d1) { return color(d1.id); })
+									.on('mouseover', function(d1, i) {
+										var currentState1 = this;
+										d3.select(this).transition(200).style('fill-opacity', 2);
+									})
+									.on('mouseout', function(d1, i) {
 										d3.selectAll('path').transition(200)
 										.style('fill-opacity', .7);
 									});
